@@ -1,6 +1,6 @@
 //do something
 
-import Client from '/shopify-buy';
+import Client from 'shopify-buy';
 
 
 const shopClient = Client.buildClient({
