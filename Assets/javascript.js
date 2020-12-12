@@ -36,30 +36,70 @@
             console.log('Request failed');
             })
             let buildProducts = (products) => {
-                products.forEach((product) => {
-                    let productContainer = $('<a/>').attr('id', `product_${product.attrs.id}`);
-                    console.log(productContainer);
-                    let title = `<h2>${product.attrs.title}</h2>`
-                    console.log(title);
-                    let img = `<img class="product-images" src="${product.images[0].src}/">`
-                    console.log(img);
-                    let price = `<p class="productPrice-${product.id}">${product.attrs.variants[0].price}</p>`
-                    console.log(price);
-                    productContainer.append(title, img, price)
-                    $('#products').append(productContainer)
-                })
+              products.forEach((product) => {
+
+                let url = new URL(`${window.location.origin}/product.html`); 
+                url.searchParams.append('p', `${product.attrs.handle}`); 
+
+                let productContainer = document.createElement("a");
+                productContainer.setAttribute('id', `product_${product.attrs.id}`);
+                productContainer.setAttribute("href", `${url}`);
+
+                let title = document.createElement("h2");
+                title.append(`${product.attrs.title}`);
+
+                let img = document.createElement("img");
+                img.className = "product-images";
+                img.setAttribute("src", `${product.images[0].src}`);
+
+                let price = document.createElement("p");
+                price.className = `productPrice-${product.id}`;
+                price.append(`${product.attrs.variants[0].price}`);
+
+                productContainer.append(title, img, price);
+
+                let productElement = document.getElementById("products");
+                productElement.append(productContainer);
+
+              })
             }  
 
-            client.checkout.create().then((checkout) => {
-                // Do something with the checkout
-                console.log(checkout);
-              });
+            // client.checkout.create().then((checkout) => {
+            //     // Do something with the checkout
+            //     console.log(checkout);
+            //   });
 
         }
       })();
 
 
       
+      // var url = new URL("http://127.0.0.1:5500/index.html"); 
+        
+      //     url.searchParams.set('param_1', 'val_1'); 
+      //     console.log(url.searchParams.set('param_1', 'val_1'))
+      
+
+      // var up = document.getElementById('GFG_UP'); 
+      // var url = new URL("http://127.0.0.1:5501/index2.html"); 
+      // up.innerHTML = url; 
+      // var down = document.getElementById('GFG_DOWN'); 
+        
+      // function GFG_Fun() { 
+      //     url.searchParams.append('param_1', 'val_1'); 
+      //     down.innerHTML = url; 
+      // } 
+
+
+
+
+
+
+
+
+
+
+
       /*]]>*/
 
 // const shopClient = ShopifyBuy.buildClient({

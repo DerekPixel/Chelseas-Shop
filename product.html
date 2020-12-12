@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>BunsBiscuit</title>
+
+</head>
+<body>
+    <header>
+
+        <section class="banner main">
+            <h1>BIG BUNS</h1>
+        </section>
+
+        <nav class="sidenav">
+
+            <div class="logo"></div>
+
+            <a href="#">About</a>
+            <a href="#">Crystals</a>
+            <a href="#">Creations</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQS</a>
+            <a href="#">Privacy</a>
+
+        </nav>
+    </header>
+
+    <div id="item" class="main">
+        
+    </div>
+
+    <footer>
+        <nav class="footer-nav">
+            <a href="#">Policy</a>
+            <a href="#">Our House</a>
+            <a href="#">EMAIL US</a>
+        </nav>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://sdks.shopifycdn.com/js-buy-sdk/v0/latest/shopify-buy.umd.polyfilled.min.js" ></script> -->
+    <!-- <script type="module" src="Assets/javascript.js"></script> -->
+    <script>
+
+var getQueryString = function ( field, url ) {
+	var href = url ? url : window.location.href;
+	var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+	var string = reg.exec(href);
+	return string ? string[1] : null;
+};
+
+
+        var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+
+        loadScript();
+        
+        function loadScript() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = scriptURL;
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+          script.onload = ShopifyBuyInit;
+        }
+        function ShopifyBuyInit() {
+          var client = ShopifyBuy.buildClient({
+            domain: 'nicebreads.myshopify.com',
+            storefrontAccessToken: '6d8f043c8faac22a22c3505191ee5ba5',
+          });
+          
+          var p = getQueryString('p');
+
+          client.product.fetchByHandle(p).then((products) => {
+            console.log(products);
+            buildProducts(products)
+          })
+          .catch(() => {
+            console.log('Request failed');
+            })
+            let buildProducts = (product) => {
+                
+
+                    var url = new URL(`${window.location.origin}/product.html`); 
+                    url.searchParams.append('p', `${product.attrs.id}`); 
+
+                    let productContainer = $('<a/>').attr('id', `product_${product.attrs.id}`).attr('href', `${url}`);
+                    let title = `<h2>${product.attrs.title}</h2>`
+                    let img = `<img class="product-images" src="${product.images[0].src}/">`
+                    let price = `<p class="productPrice-${product.id}">${product.attrs.variants[0].price}</p>`
+                    productContainer.append(title, img, price)
+                    $('#item').append(productContainer)
+                
+            }  
+
+            // client.checkout.create().then((checkout) => {
+            //     // Do something with the checkout
+            //     console.log(checkout);
+            //   });
+
+        }
+
+
+    </script>
+
+</body>
+</html>

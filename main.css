@@ -46,6 +46,11 @@ table {
   border-spacing: 0;
 }
 
+/* I added this */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /*
 =================================
 Home
